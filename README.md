@@ -1,6 +1,6 @@
-# API test automation with Jest and PactumJS
+# Automação de testes de API com Jest e PactumJS
 
-> Simple integration between JestJS and PactumJS.
+> Integração simples entre JestJS e PactumJS.
 
 ## GitHub Actions
 
@@ -10,31 +10,43 @@
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ugioni_integration-tests-jest&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=ugioni_integration-tests-jest)
 
-# Getting Started
+# Guia de Início
 
-### Pactum docs:
+### Documentação do Pactum:
  - [PactumJS](https://pactumjs.github.io/)
 
-### Prerequisites:
+### Pré-requisitos:
  - NodeJS `v22`
 
-### How to run?
+### Como executar?
 
-Inside of the project folder run:
+Dentro da pasta do projeto, execute:
 
- 1. `npm install --save-dev`
- 1. `npm run ci`
+ 1. `npm install`
+ 2. `npm run ci`
+ 3. `npx jest test/dummy_carts.spec.ts`
 
-After that you should see a `./output` folder with some `HTML` reports.
 
-### Docs to Api under tests: 
- - [Dummyjson](https://dummyjson.com/docs)
- - [Gorest](https://gorest.co.in/)
- - [Toolshop API](https://api.practicesoftwaretesting.com/api/documentation)
- - [Deck of Cards](https://deckofcardsapi.com/)
- - [JSON placeholder](https://jsonplaceholder.typicode.com/)
- - [http bin](http://httpbin.org/)
- - [rick and morty api](https://rickandmortyapi.com/documentation/#rest)
- - [Petstore](https://petstore.swagger.io/#/) 
- - [ServeRest](https://serverest.dev/#/)
- - [ServeRest - Datadog](https://p.datadoghq.eu/sb/421fcfee-35ec-11ee-b87f-da7ad0900005-2aaf85264a89d11b7001bcab452a266e?refresh_mode=sliding&theme=light&tpl_var_env%5B0%5D=serverest.dev&from_ts=1699931511294&to_ts=1699932411294&live=true)
+
+### Documentação da API em teste:
+ - [Dummyjson Carts API](https://dummyjson.com/docs/carts)
+
+### Como rodar os testes?
+
+Para rodar especificamente o arquivo de teste `dummy_carts`, use o seguinte comando:
+
+```bash
+npx jest test/dummy_carts.spec.ts
+```
+
+### Como funciona o arquivo `dummy_carts.spec.ts`:
+
+Este arquivo de teste valida a **DummyJSON Carts API** usando **PactumJS** para requisições e validações, e `@faker-js/faker` para gerar dados dinâmicos.
+
+A suíte de testes cobre as seguintes operações de carrinho (carts):
+- **GET /carts**: Busca todos os carrinhos e valida a estrutura com base nas propriedades esperadas (`carts`, `total`, `skip`, `limit`).
+- **POST /carts/add**: Cria um novo carrinho com quantidades aleatórias de produtos usando o faker, validando o status `201 CREATED` ou `200 OK` e garantindo o schema retornado contendo os IDs do carrinho mockado.
+- **GET /carts/{id}**: Valida o payload ao buscar um único carrinho por um ID específico.
+- **GET /carts/user/{userId}**: Verifica se a API filtra corretamente e retorna um array de carrinhos para o ID de um usuário específico.
+- **PUT /carts/{id}**: Testa a funcionalidade de atualização do carrinho, mesclando novos produtos a ele.
+- **DELETE /carts/{id}**: Confirma que um carrinho específico pode ser sinalizado como deletado com sucesso (`isDeleted: true`).
